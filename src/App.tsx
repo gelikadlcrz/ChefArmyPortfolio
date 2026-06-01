@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react';
 import {
   ArrowUpRight,
   Award,
-  BookOpen,
   BriefcaseBusiness,
   ChefHat,
   Download,
   ExternalLink,
+  FileText,
   GraduationCap,
   Contact,
   Mail,
@@ -15,14 +15,13 @@ import {
   Phone,
   Quote,
   Sparkles,
-  Star,
   Utensils,
   X,
 } from 'lucide-react';
 
 const asset = (fileName: string) => `${import.meta.env.BASE_URL}assets/${fileName}`;
 
-type GalleryFilter = 'All' | 'Plated Work' | 'Pastry & Dessert' | 'Events & Displays' | 'Production';
+type GalleryFilter = 'All' | 'Savory Plates' | 'Pastry & Dessert' | 'Displays & Service' | 'Production & Prep';
 
 type GalleryItem = {
   title: string;
@@ -30,6 +29,14 @@ type GalleryItem = {
   image: string;
   description: string;
   featured?: boolean;
+};
+
+type CredentialItem = {
+  title: string;
+  issuer: string;
+  year: string;
+  image: string;
+  note: string;
 };
 
 const navItems = [
@@ -41,170 +48,332 @@ const navItems = [
 ];
 
 const heroImages = [
-  asset('hero-charcuterie.webp'),
-  asset('hero-bao.webp'),
-  asset('hero-plated-lamb.webp'),
-  asset('hero-cake.webp'),
+  asset('dish-charcuterie-board.webp'),
+  asset('dish-bao-sandwiches.webp'),
+  asset('dish-grilled-lamb-plate.webp'),
+  asset('dessert-pink-strawberry-cake.webp'),
 ];
 
 const galleryItems: GalleryItem[] = [
   {
-    title: 'Composed Lamb Plate',
-    category: 'Plated Work',
-    image: asset('hero-plated-lamb.webp'),
-    description: 'A refined savory plate focused on color, balance, and controlled garnish placement.',
-    featured: true,
-  },
-  {
-    title: 'Carved Steak with Garden Vegetables',
-    category: 'Plated Work',
-    image: asset('dish-steak-garden.webp'),
-    description: 'Rich protein cookery paired with vegetables and a structured plate presentation.',
-  },
-  {
-    title: 'Shrimp Entrée with Sauce Detail',
-    category: 'Plated Work',
-    image: asset('dish-shrimp-plating.webp'),
-    description: 'A bright seafood plate with sauce work, height, and clean negative space.',
-  },
-  {
-    title: 'Cream Pasta Plate',
-    category: 'Plated Work',
-    image: asset('dish-cream-pasta.webp'),
-    description: 'Comfort-driven pasta presentation with a polished restaurant-style finish.',
-  },
-  {
-    title: 'Crispy Rice Bowl',
-    category: 'Plated Work',
-    image: asset('dish-crispy-rice.webp'),
-    description: 'Layered savory elements arranged for texture, contrast, and immediate visual impact.',
-  },
-  {
-    title: 'Fish Composition',
-    category: 'Plated Work',
-    image: asset('dish-composed-fish.webp'),
-    description: 'Cleanly arranged fillets with vegetables and a precise linear presentation.',
-  },
-  {
     title: 'Charcuterie Grazing Board',
-    category: 'Events & Displays',
-    image: asset('hero-charcuterie.webp'),
-    description: 'A generous hospitality board built around abundance, rhythm, color, and sharing.',
+    category: 'Displays & Service',
+    image: asset('dish-charcuterie-board.webp'),
+    description: 'A generous display built around color, texture, and shared dining.',
     featured: true,
   },
   {
-    title: 'Cordon Bleu Display',
-    category: 'Events & Displays',
-    image: asset('event-cordon-bleu.webp'),
-    description: 'A competition-style plated dish with a cultural table setting and menu card styling.',
-  },
-  {
-    title: 'Filipino-Inspired Competition Plate',
-    category: 'Events & Displays',
-    image: asset('event-filipino-kare.webp'),
-    description: 'A curated cultural plate designed for food display, storytelling, and presentation value.',
-  },
-  {
-    title: 'Pastry Display Setup',
-    category: 'Events & Displays',
-    image: asset('event-pastry-display.webp'),
-    description: 'A showcase table arrangement highlighting pastry, display height, and event styling.',
-  },
-  {
-    title: 'Strawberry Celebration Cake',
-    category: 'Pastry & Dessert',
-    image: asset('cake-pink-strawberry.webp'),
-    description: 'A celebratory cake with bold color, piped details, and decorative fruit accents.',
+    title: 'Grilled Lamb Plate',
+    category: 'Savory Plates',
+    image: asset('dish-grilled-lamb-plate.webp'),
+    description: 'A composed savory plate with clean garnish and balanced portions.',
     featured: true,
   },
   {
-    title: 'Caramel Nut Tart',
+    title: 'Pink Strawberry Cake',
     category: 'Pastry & Dessert',
-    image: asset('dessert-caramel-nut-tart.webp'),
-    description: 'A glossy dessert piece focused on texture, caramel sheen, and nut garnish.',
+    image: asset('dessert-pink-strawberry-cake.webp'),
+    description: 'A celebration cake with bold color, fruit detail, and piped finishing.',
+    featured: true,
+  },
+  {
+    title: 'Brunch Grazing Board',
+    category: 'Displays & Service',
+    image: asset('display-brunch-grazing-board.webp'),
+    description: 'A breakfast-style spread arranged for abundance and visual warmth.',
+    featured: true,
+  },
+  {
+    title: 'Golden Spoon Canapés',
+    category: 'Production & Prep',
+    image: asset('dish-golden-spoon-canapes.webp'),
+    description: 'Small bites prepared with repetition, color, and neat garnish work.',
+  },
+  {
+    title: 'Baked Casserole Tray',
+    category: 'Production & Prep',
+    image: asset('dish-baked-casserole-tray.webp'),
+    description: 'Batch-style preparation with an even baked finish.',
+  },
+  {
+    title: 'Carved Steak with Vegetables',
+    category: 'Savory Plates',
+    image: asset('dish-carved-steak-vegetables.webp'),
+    description: 'A hearty protein plate with vegetables and simple restaurant styling.',
+  },
+  {
+    title: 'Baked Lasagna Plate',
+    category: 'Savory Plates',
+    image: asset('dish-baked-lasagna-plate.webp'),
+    description: 'Classic comfort food plated with a clean, finished look.',
+  },
+  {
+    title: 'Braised Meat Plate',
+    category: 'Savory Plates',
+    image: asset('dish-braised-meat-plate.webp'),
+    description: 'A warm savory plate with sauce, vegetables, and a composed finish.',
+  },
+  {
+    title: 'Bao Sandwiches',
+    category: 'Production & Prep',
+    image: asset('dish-bao-sandwiches.webp'),
+    description: 'Soft handheld pieces prepared with consistent filling and garnish.',
+  },
+  {
+    title: 'Beef with Green Beans',
+    category: 'Savory Plates',
+    image: asset('dish-beef-green-beans.webp'),
+    description: 'A family-style savory dish focused on flavor and service readiness.',
+  },
+  {
+    title: 'Terrine Board',
+    category: 'Displays & Service',
+    image: asset('dish-terrine-board.webp'),
+    description: 'A plated board with fruit, garnish, and a polished service layout.',
+  },
+  {
+    title: 'Terrine Board Detail',
+    category: 'Displays & Service',
+    image: asset('dish-terrine-board-alt.webp'),
+    description: 'A second look at the same board, showing portioning and detail.',
+  },
+  {
+    title: 'Pastry Table Display',
+    category: 'Displays & Service',
+    image: asset('display-pastry-table.webp'),
+    description: 'A dessert and display setup arranged for event presentation.',
+  },
+  {
+    title: 'Cream Pasta with Bacon',
+    category: 'Savory Plates',
+    image: asset('dish-cream-pasta-bacon.webp'),
+    description: 'A simple pasta plate finished for individual service.',
+  },
+  {
+    title: 'Rolls Production Tray',
+    category: 'Production & Prep',
+    image: asset('production-rolls-tray.webp'),
+    description: 'Volume prep work showing consistency and kitchen organization.',
+  },
+  {
+    title: 'Crispy Rice with Egg',
+    category: 'Savory Plates',
+    image: asset('dish-crispy-rice-egg.webp'),
+    description: 'A plated savory dish with height, sauce, and garnish contrast.',
+  },
+  {
+    title: 'Breakfast Sandwich Plate',
+    category: 'Savory Plates',
+    image: asset('dish-breakfast-sandwich-plate.webp'),
+    description: 'A café-style plate prepared with a complete service setup.',
+  },
+  {
+    title: 'Sandwich with Dip',
+    category: 'Savory Plates',
+    image: asset('dish-sandwich-dip.webp'),
+    description: 'A toasted handheld dish paired with sauce for a casual plated finish.',
+  },
+  {
+    title: 'Seafood Appetizer',
+    category: 'Savory Plates',
+    image: asset('dish-seafood-appetizer.webp'),
+    description: 'A light seafood plate with fresh garnish and controlled spacing.',
+  },
+  {
+    title: 'Cream Soup with Toast',
+    category: 'Savory Plates',
+    image: asset('dish-cream-soup-toast.webp'),
+    description: 'A soup course presented with toast and a clean central garnish.',
+  },
+  {
+    title: 'Seafood Plate with Sauce Detail',
+    category: 'Savory Plates',
+    image: asset('dish-seafood-dotted-sauce.webp'),
+    description: 'A bright plate with sauce accents and careful color placement.',
+  },
+  {
+    title: 'Canapé Row',
+    category: 'Production & Prep',
+    image: asset('dish-canape-row.webp'),
+    description: 'Repeated small-bite plating with consistent topping and garnish.',
+  },
+  {
+    title: 'Slider Canapés',
+    category: 'Production & Prep',
+    image: asset('dish-slider-canapes.webp'),
+    description: 'Miniature savory pieces made for event-style service.',
+  },
+  {
+    title: 'Event Appetizer Plate',
+    category: 'Displays & Service',
+    image: asset('dish-event-appetizer.webp'),
+    description: 'A competition or event plate with a more formal table setting.',
+  },
+  {
+    title: 'Paired Entrée Plates',
+    category: 'Savory Plates',
+    image: asset('dish-paired-entree-plates.webp'),
+    description: 'Two matching plates prepared for consistent service presentation.',
+  },
+  {
+    title: 'Paired Entrée Plates II',
+    category: 'Savory Plates',
+    image: asset('dish-paired-entree-plates-alt.webp'),
+    description: 'A second paired entrée presentation with clean plating repetition.',
+  },
+  {
+    title: 'Competition Chicken Plate',
+    category: 'Displays & Service',
+    image: asset('dish-competition-chicken-plate.webp'),
+    description: 'A cultural display plate styled with menu-card presentation.',
+  },
+  {
+    title: 'Creamy Risotto Plate',
+    category: 'Savory Plates',
+    image: asset('dish-creamy-risotto-plate.webp'),
+    description: 'A warm rice course presented with a simple garnish finish.',
+  },
+  {
+    title: 'Noodle and Egg Plate',
+    category: 'Savory Plates',
+    image: asset('dish-noodle-egg-plate.webp'),
+    description: 'A colorful savory plate with egg, vegetables, and height.',
+  },
+  {
+    title: 'Dumpling Soup Course',
+    category: 'Savory Plates',
+    image: asset('dish-dumpling-soup-course.webp'),
+    description: 'A comforting plated course presented with a service card.',
+  },
+  {
+    title: 'Roasted Beef Plate',
+    category: 'Savory Plates',
+    image: asset('dish-roasted-beef-plate.webp'),
+    description: 'A composed meat plate with pastry, vegetables, and sauce.',
+  },
+  {
+    title: 'Floral Cupcake Bouquet',
+    category: 'Pastry & Dessert',
+    image: asset('dessert-floral-cupcake-bouquet.webp'),
+    description: 'Decorative piping arranged like an edible bouquet.',
+  },
+  {
+    title: 'Mini Blueberry Cakes',
+    category: 'Pastry & Dessert',
+    image: asset('dessert-mini-blueberry-cakes.webp'),
+    description: 'Small-format dessert work with fruit topping and clean portions.',
+  },
+  {
+    title: 'Caramel Swirl Cake',
+    category: 'Pastry & Dessert',
+    image: asset('dessert-caramel-swirl-cake.webp'),
+    description: 'A dessert cake with a glossy top and swirl decoration.',
+  },
+  {
+    title: 'Garden Sheet Cake',
+    category: 'Pastry & Dessert',
+    image: asset('dessert-garden-sheet-cake.webp'),
+    description: 'A playful decorated cake with flowers and outdoor-inspired details.',
   },
   {
     title: 'Cinnamon Rolls',
     category: 'Pastry & Dessert',
     image: asset('dessert-cinnamon-rolls.webp'),
-    description: 'Baked pastry work showing consistency, spiral definition, and warm product finish.',
+    description: 'Baked pastry work with soft spirals and an even finish.',
   },
   {
-    title: 'Floral Cupcake Bouquet',
+    title: 'Caramel Nut Tart',
     category: 'Pastry & Dessert',
-    image: asset('cake-floral-cupcakes.webp'),
-    description: 'Decorative piping work arranged as an edible bouquet with soft floral tones.',
+    image: asset('dessert-caramel-nut-tart.webp'),
+    description: 'A glossy dessert with caramel shine, nuts, and texture.',
   },
   {
-    title: 'Fruit Dessert Plate',
+    title: 'Fruit Cream Plate',
     category: 'Pastry & Dessert',
-    image: asset('dessert-fruit-plate.webp'),
-    description: 'Fresh fruit, cream, and garnish arranged for a light plated dessert direction.',
+    image: asset('dessert-fruit-cream-plate.webp'),
+    description: 'A light plated dessert with fruit, cream, and garnish.',
   },
   {
-    title: 'Canapés with Avocado Detail',
-    category: 'Production',
-    image: asset('dish-canape.webp'),
-    description: 'Small-bite production work emphasizing repetition, uniformity, and clean garnish.',
-  },
-  {
-    title: 'Radish Garden Bites',
-    category: 'Production',
-    image: asset('dish-radish-bites.webp'),
-    description: 'A composed small-plate setup with delicate toppings and a fresh color palette.',
-  },
-  {
-    title: 'Rolls Production Tray',
-    category: 'Production',
-    image: asset('dish-rolls-production.webp'),
-    description: 'Batch preparation work that reflects consistency, speed, and kitchen organization.',
+    title: 'Blueberry Cream Plate',
+    category: 'Pastry & Dessert',
+    image: asset('dessert-blueberry-cream-plate.webp'),
+    description: 'A plated dessert with berry color and a soft cream finish.',
   },
 ];
 
-const filters: GalleryFilter[] = ['All', 'Plated Work', 'Pastry & Dessert', 'Events & Displays', 'Production'];
+const filters: GalleryFilter[] = ['All', 'Savory Plates', 'Pastry & Dessert', 'Displays & Service', 'Production & Prep'];
 
-const credentials = [
+const credentials: CredentialItem[] = [
   {
-    title: 'Best Food Display — Champion',
+    title: 'Best Food Display',
     issuer: 'Our Lady of Fatima University',
     year: '2025',
     image: asset('cert-best-food-display.webp'),
-    note: 'Awarded for an innovative, aesthetic, and sustainable food display booth.',
+    note: 'Recognition for “Flavors of the World, Threads of Tomorrow,” a sustainable culture and gastronomy display.',
   },
   {
-    title: 'Junior Chef de Partie Recognition',
+    title: 'Junior Chef de Partie',
     issuer: 'Sauveur Prestige / OLFU CHIM',
     year: '2025',
-    image: asset('cert-junior-chef.webp'),
-    note: 'Recognition connected to culinary performance and hands-on kitchen readiness.',
+    image: asset('cert-junior-chef-de-partie.webp'),
+    note: 'Accepted and recognized with a Junior Chef de Partie rank for culinary readiness and performance.',
+  },
+  {
+    title: 'Hiraya Manawari Micro-Badges',
+    issuer: 'Global Professional Advancement',
+    year: '2025',
+    image: asset('cert-hiraya-microbadges.webp'),
+    note: 'Completed three micro-badges under the Industry Experiential Study Program.',
   },
   {
     title: 'Introduction to Hospitality & Tourism',
     issuer: 'American Hospitality Academy',
     year: '2025',
-    image: asset('cert-aha.webp'),
-    note: 'Completed with honors as part of international hospitality development.',
+    image: asset('cert-aha-hospitality-tourism.webp'),
+    note: 'Professional development certificate completed with honors.',
   },
   {
-    title: 'Work Health and Safety Procedures',
+    title: 'Australian Work Health and Safety Procedures',
     issuer: 'eVersity Online Campus',
     year: '2025',
-    image: asset('cert-eversity.webp'),
-    note: 'Training in workplace safety standards, procedures, and professional conduct.',
+    image: asset('cert-eversity-work-health-safety.webp'),
+    note: 'Training focused on workplace safety standards, procedures, and professional conduct.',
+  },
+  {
+    title: 'Work Health and Safety Competency Badge',
+    issuer: 'eVersity Online Campus',
+    year: '2025',
+    image: asset('cert-whs-competency-badge.webp'),
+    note: 'Competency badge covering safety, employability, documentation, and workplace communication skills.',
+  },
+];
+
+const documentCards = [
+  {
+    title: 'Resume Preview — Page 1',
+    image: asset('army-resume-page-1.webp'),
+    href: asset('army-barnachea-resume.pdf'),
+  },
+  {
+    title: 'Resume Preview — Page 2',
+    image: asset('army-resume-page-2.webp'),
+    href: asset('army-barnachea-resume.pdf'),
   },
 ];
 
 const skills = [
   'Food preparation',
+  'Plating design',
   'Kitchen organization',
   'Menu testing',
-  'Plating design',
   'Food safety',
   'Guest service',
-  'Team coordination',
+  'Leadership',
+  'Critical thinking',
   'Multitasking',
   'Creative problem-solving',
-  'Culinary presentation',
+  'Team coordination',
+  'Hospitality communication',
 ];
 
 const milestones = [
@@ -212,19 +381,19 @@ const milestones = [
     icon: GraduationCap,
     title: 'Culinary Arts Student',
     meta: 'Our Lady of Fatima University · 2024–Present',
-    text: 'Currently pursuing Bachelor of Science in International Hospitality Management, specializing in Culinary Arts.',
+    text: 'I am pursuing a Bachelor of Science in International Hospitality Management, specializing in Culinary Arts.',
   },
   {
     icon: BriefcaseBusiness,
-    title: 'Lead Cook',
+    title: 'Lead Cook Experience',
     meta: "Army's Diner · Palayan City",
-    text: 'Assisted with menu development, recipe testing, day-to-day cooking, order-taking, and guest-facing service.',
+    text: 'I assisted with menu development, recipe testing, cooking, order-taking, and guest-facing service.',
   },
   {
     icon: Utensils,
-    title: 'Laboratory Kitchen Experience',
+    title: 'Kitchen Laboratory Training',
     meta: 'Culinary laboratory classes',
-    text: 'Prepared dishes under food safety standards while developing technique, timing, teamwork, and plating discipline.',
+    text: 'I continue to build discipline in food preparation, cooking methods, plating, timing, teamwork, and food safety.',
   },
 ];
 
@@ -274,10 +443,10 @@ function App() {
           <div className="hero-ambient" aria-hidden="true" />
           <div className="hero-copy">
             <span className="eyebrow">International Hospitality Management · Culinary Arts</span>
-            <h1>Refined culinary storytelling, plated with intention.</h1>
+            <h1>Plated with intention.</h1>
             <p>
-              I am Army S. Barnachea, an aspiring culinary professional developing a portfolio
-              built on hands-on kitchen discipline, thoughtful presentation, and memorable guest experiences.
+              I create food with care, discipline, and a strong sense of hospitality. My work focuses on clean
+              preparation, thoughtful presentation, and dining experiences that feel polished from the first look.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href="#showcase">
@@ -296,10 +465,10 @@ function App() {
               ))}
             </div>
             <div className="portrait-card">
-              <img src={asset('portrait-primary.webp')} alt="Army S. Barnachea in chef uniform" />
+              <img src={asset('army-portrait-chef.webp')} alt="Army S. Barnachea in chef uniform" />
               <div>
                 <span>Current focus</span>
-                <strong>Technique · plating · hospitality</strong>
+                <strong>Technique · plating · service</strong>
               </div>
             </div>
           </div>
@@ -308,41 +477,41 @@ function App() {
         <section className="section intro-band" aria-label="Portfolio highlights">
           <div className="stat-card">
             <span>01</span>
-            <strong>Kitchen-ready training</strong>
-            <p>Hands-on laboratory experience in food preparation, cooking technique, and food safety.</p>
+            <strong>Kitchen discipline</strong>
+            <p>I train through hands-on preparation, cooking methods, and food safety standards.</p>
           </div>
           <div className="stat-card highlighted">
             <span>02</span>
-            <strong>Champion display work</strong>
-            <p>Recognized for a sustainability-driven cultural and gastronomic food display.</p>
+            <strong>Awarded display work</strong>
+            <p>My food display work was recognized for cultural storytelling, sustainability, and presentation.</p>
           </div>
           <div className="stat-card">
             <span>03</span>
             <strong>Hospitality mindset</strong>
-            <p>Guest-facing experience, collaborative service, and consistent attention to detail.</p>
+            <p>I value warm service, teamwork, attention to detail, and memorable guest experiences.</p>
           </div>
         </section>
 
         <section className="section about-section" id="about">
           <div className="section-heading split-heading">
             <div>
-              <span className="eyebrow">About the chef-in-training</span>
-              <h2>A calm, detail-first culinary student with a strong eye for presentation.</h2>
+              <span className="eyebrow">About me</span>
+              <h2>I am building a culinary path through technique, service, and presentation.</h2>
             </div>
             <p>
-              Army is building her foundation through culinary laboratory work, restaurant-style service,
-              food display projects, and international hospitality courses. Her work highlights careful
-              execution, clean plating, and a growing confidence in both savory and pastry preparation.
+              As a culinary arts student, I am developing my foundation through laboratory kitchens, restaurant-style
+              service, food display projects, and international hospitality coursework. I enjoy work that combines
+              creativity with order: a clean station, a well-planned plate, and food that feels intentional.
             </p>
           </div>
 
           <div className="about-grid">
             <article className="about-card large-card">
               <Quote size={34} />
-              <h3>Food should feel intentional before the first bite.</h3>
+              <h3>Every plate should feel cared for.</h3>
               <p>
-                This portfolio presents Army as an emerging culinary professional who values structure,
-                creativity, discipline, and the small decisions that turn a dish into a memorable dining moment.
+                I want my work to show discipline without losing warmth. Whether I am preparing savory dishes,
+                desserts, or displays, I focus on details that make food feel thoughtful and memorable.
               </p>
             </article>
 
@@ -362,18 +531,17 @@ function App() {
 
         <section className="section craft-section">
           <div className="craft-panel">
-            <img src={asset('portrait-secondary.webp')} alt="Army S. Barnachea in a culinary laboratory" />
+            <img src={asset('army-portrait-kitchen.webp')} alt="Army S. Barnachea in a culinary laboratory" />
             <div>
               <span className="eyebrow">Career direction</span>
-              <h2>From student kitchen to high-end culinary environments.</h2>
+              <h2>Growing toward professional kitchen environments.</h2>
               <p>
-                Her short-term goal is to strengthen practical kitchen performance through internship work,
-                advanced cooking techniques, and disciplined kitchen management. Long term, she aims to grow
-                into a professional chef capable of developing signature dishes and elevated dining experiences.
+                I am seeking opportunities where I can strengthen my cooking techniques, improve kitchen management
+                habits, learn from experienced chefs, and contribute to a team that cares about quality and service.
               </p>
               <div className="signature-line">
                 <ChefHat size={20} />
-                <span>Technique guided by service, culture, and presentation.</span>
+                <span>Technique guided by creativity, culture, and service.</span>
               </div>
             </div>
           </div>
@@ -381,11 +549,10 @@ function App() {
 
         <section className="section showcase-section" id="showcase">
           <div className="section-heading centered">
-            <span className="eyebrow">Selected culinary work</span>
+            <span className="eyebrow">Complete culinary archive</span>
             <h2>Showcase</h2>
             <p>
-              A curated gallery of plated dishes, pastry work, production pieces, and event displays selected
-              from Army’s image archive.
+              A full gallery of my savory plates, pastries, desserts, display work, and production pieces.
             </p>
           </div>
 
@@ -419,10 +586,11 @@ function App() {
         <section className="section skills-section">
           <div className="skills-copy">
             <span className="eyebrow">Working strengths</span>
-            <h2>Built for busy kitchens, careful prep, and collaborative service.</h2>
+            <h2>I work best where preparation, teamwork, and detail matter.</h2>
             <p>
-              Army’s profile combines food preparation, leadership, critical thinking, resourcefulness,
-              and interpersonal skills with a strong interest in cooking, baking, traveling, and exploring cuisines.
+              My strengths include leadership, critical thinking, resourcefulness, collaboration, and calm multitasking.
+              I am especially interested in cooking, baking, exploring cuisines, and learning how professional kitchens
+              turn ideas into consistent guest experiences.
             </p>
           </div>
           <div className="skills-list" aria-label="Skills list">
@@ -435,12 +603,12 @@ function App() {
         <section className="section credentials-section" id="credentials">
           <div className="section-heading split-heading">
             <div>
-              <span className="eyebrow">Awards & certifications</span>
-              <h2>Formal training with visible proof of excellence.</h2>
+              <span className="eyebrow">Awards, certificates & documents</span>
+              <h2>Training, recognition, and proof of readiness.</h2>
             </div>
             <p>
-              The credential section is designed to look like a premium culinary press kit: clean, focused,
-              and easy for internship coordinators or employers to scan.
+              These credentials reflect my growing foundation in hospitality, culinary preparation, food safety,
+              workplace safety, leadership, and professional service.
             </p>
           </div>
 
@@ -462,12 +630,25 @@ function App() {
           <div className="credential-note">
             <Award size={28} />
             <div>
-              <strong>Additional coursework</strong>
+              <strong>Additional listed coursework</strong>
               <p>
-                Includes Australian standards for serving alcohol responsibly, Australian work health and safety
-                procedures, and Australian/New Zealand standards for safe food handling procedures.
+                My resume also lists Australian Standards for Serving Alcohol Responsibly and Australian/New Zealand
+                Standards for Safe Food Handling Procedures, alongside my hospitality and safety training.
               </p>
             </div>
+          </div>
+
+          <div className="documents-grid" aria-label="Resume previews">
+            {documentCards.map((document) => (
+              <a className="document-card" key={document.title} href={document.href} target="_blank" rel="noreferrer">
+                <img src={document.image} alt={document.title} loading="lazy" />
+                <div>
+                  <FileText size={20} />
+                  <span>{document.title}</span>
+                  <ExternalLink size={16} />
+                </div>
+              </a>
+            ))}
           </div>
         </section>
 
@@ -475,10 +656,10 @@ function App() {
           <div className="contact-card">
             <div className="contact-copy">
               <span className="eyebrow">Availability</span>
-              <h2>Open to culinary internships, kitchen training, and hospitality opportunities.</h2>
+              <h2>I am open to culinary internships, kitchen training, and hospitality opportunities.</h2>
               <p>
-                For collaborations, internship coordination, or culinary work opportunities, Army can be reached
-                through email, phone, or LinkedIn.
+                For internship coordination, culinary training, or hospitality opportunities, you may reach me through
+                email, phone, or LinkedIn.
               </p>
             </div>
 
