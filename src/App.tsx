@@ -75,14 +75,12 @@ const galleryItems: GalleryItem[] = [
     category: 'Pastry & Dessert',
     image: asset('dessert-pink-strawberry-cake.webp'),
     description: 'A celebration cake with bold color, fruit detail, and piped finishing.',
-    featured: true,
   },
   {
     title: 'Brunch Grazing Board',
     category: 'Displays & Service',
     image: asset('display-brunch-grazing-board.webp'),
     description: 'A breakfast-style spread arranged for abundance and visual warmth.',
-    featured: true,
   },
   {
     title: 'Golden Spoon Canapés',
@@ -129,7 +127,7 @@ const galleryItems: GalleryItem[] = [
   {
     title: 'Terrine Board',
     category: 'Displays & Service',
-    image: asset('dish-terrine-board.webp'),
+    image: asset('dish-terrine-board-alt.webp'),
     description: 'A plated board with fruit, garnish, and a polished service layout.',
   },
   {
@@ -550,16 +548,24 @@ function App() {
           </div>
 
           <div className="gallery-grid">
-            {filteredGallery.map((item) => (
-              <article className={item.featured ? 'gallery-card featured' : 'gallery-card'} key={item.title}>
-                <img src={item.image} alt={item.title} loading="lazy" />
-                <div className="gallery-card-content">
-                  <span>{item.category}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              </article>
-            ))}
+            {filteredGallery.map((item) => {
+              const isFeatured = activeFilter === 'All' && item.featured;
+
+              return (
+                <article
+                  className={isFeatured ? 'gallery-card featured' : 'gallery-card'}
+                  data-title={item.title}
+                  key={item.title}
+                >
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                  <div className="gallery-card-content">
+                    <span>{item.category}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 

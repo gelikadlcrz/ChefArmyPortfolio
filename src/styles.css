@@ -179,11 +179,12 @@ a {
 .hero {
   position: relative;
   display: grid;
-  min-height: 100vh;
-  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+  min-height: 100svh;
+  grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.98fr);
   align-items: center;
-  gap: 60px;
-  padding-top: 150px;
+  gap: clamp(28px, 3.5vw, 48px);
+  padding-top: 112px;
+  padding-bottom: 58px;
 }
 
 .hero-ambient {
@@ -291,15 +292,18 @@ h2 {
 
 .hero-visual {
   position: relative;
-  min-height: 700px;
+  justify-self: end;
+  width: min(100%, 650px);
+  min-height: clamp(560px, 70svh, 640px);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 0.75fr;
-  grid-template-rows: 270px 210px 260px;
-  gap: 16px;
+  grid-template-rows: 230px 170px 205px;
+  gap: 14px;
   transform: rotate(-2deg);
+  transform-origin: center;
 }
 
 .hero-img {
@@ -329,28 +333,28 @@ h2 {
 
 .portrait-card {
   position: absolute;
-  right: 4%;
-  bottom: 8%;
+  right: 2%;
+  bottom: 5%;
   display: grid;
-  width: min(340px, 72%);
-  gap: 16px;
-  padding: 12px;
+  width: min(305px, 68%);
+  gap: 12px;
+  padding: 10px;
   border: 1px solid rgba(215, 181, 109, 0.38);
-  border-radius: 32px;
+  border-radius: 30px;
   background: rgba(21, 17, 13, 0.74);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
 }
 
 .portrait-card img {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 4.8;
   width: 100%;
-  border-radius: 24px;
+  border-radius: 22px;
   object-fit: cover;
 }
 
 .portrait-card div {
-  padding: 0 8px 10px;
+  padding: 0 8px 8px;
 }
 
 .portrait-card span {
@@ -366,7 +370,7 @@ h2 {
   margin-top: 4px;
   color: var(--cream);
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.55rem;
+  font-size: 1.38rem;
   line-height: 1;
 }
 
@@ -463,6 +467,10 @@ h2 {
   display: grid;
   grid-template-columns: 1.1fr 0.95fr 0.95fr;
   gap: 16px;
+}
+
+.about-grid .about-card:not(.large-card):last-child {
+  grid-column: span 2;
 }
 
 .about-card {
@@ -613,7 +621,7 @@ h2 {
 .gallery-card {
   position: relative;
   overflow: hidden;
-  min-height: 390px;
+  min-height: 340px;
   border: 1px solid rgba(247, 239, 226, 0.12);
   border-radius: 30px;
   background: var(--espresso-2);
@@ -622,6 +630,7 @@ h2 {
 
 .gallery-card.featured {
   grid-column: span 2;
+  min-height: 390px;
 }
 
 .gallery-card img {
@@ -629,8 +638,21 @@ h2 {
   height: 100%;
   min-height: inherit;
   object-fit: cover;
+  object-position: center;
   transform: scale(1.02);
   transition: 700ms ease;
+}
+
+.gallery-card[data-title='Pink Strawberry Cake'] img {
+  object-position: center 38%;
+}
+
+.gallery-card[data-title='Brunch Grazing Board'] img {
+  object-position: center 48%;
+}
+
+.gallery-card[data-title='Terrine Board'] img {
+  object-position: center 45%;
 }
 
 .gallery-card::after {
@@ -876,11 +898,13 @@ h2 {
   }
 
   .hero-visual {
-    min-height: 620px;
+    justify-self: stretch;
+    width: 100%;
+    min-height: 600px;
   }
 
   .hero-grid {
-    grid-template-rows: 220px 190px 220px;
+    grid-template-rows: 210px 180px 210px;
   }
 
   .gallery-grid,
@@ -896,8 +920,10 @@ h2 {
     grid-template-columns: 1fr;
   }
 
-  .large-card {
+  .large-card,
+  .about-grid .about-card:not(.large-card):last-child {
     grid-row: auto;
+    grid-column: auto;
   }
 
   .craft-panel > div {
@@ -964,8 +990,9 @@ h2 {
   }
 
   .hero {
-    padding-top: 124px;
-    gap: 40px;
+    padding-top: 112px;
+    padding-bottom: 52px;
+    gap: 34px;
   }
 
   .hero h1 {
@@ -1049,7 +1076,7 @@ h2 {
   .gallery-card,
   .gallery-card.featured {
     grid-column: auto;
-    min-height: 390px;
+    min-height: 360px;
   }
 
   .filter-bar {
