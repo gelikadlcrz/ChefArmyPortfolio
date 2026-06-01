@@ -6,7 +6,6 @@ import {
   Award,
   BriefcaseBusiness,
   ChefHat,
-  Download,
   ExternalLink,
   GraduationCap,
   Contact,
@@ -375,6 +374,8 @@ const milestones = [
 function App() {
   const [activeFilter, setActiveFilter] = useState<GalleryFilter>('All');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const resumeUrl = asset('army-barnachea-resume.pdf');
 
   const filteredGallery = useMemo(() => {
     if (activeFilter === 'All') return galleryItems;
@@ -418,18 +419,22 @@ function App() {
           <div className="hero-ambient" aria-hidden="true" />
           <div className="hero-copy">
             <span className="eyebrow">International Hospitality Management · Culinary Arts</span>
-            <h1>Plated with intention.</h1>
+            <div className="hero-person" aria-label="Portfolio owner">
+              <span>Army S. Barnachea</span>
+              <strong>Culinary Arts Student</strong>
+            </div>
+            <h1>Food crafted with care, discipline, and polished presentation.</h1>
             <p>
-              I create food with care, discipline, and a strong sense of hospitality. My work focuses on clean
-              preparation, thoughtful presentation, and dining experiences that feel polished from the first look.
+              I prepare dishes, desserts, and food displays with a focus on clean execution, thoughtful plating,
+              and warm guest-ready service. My goal is to make every plate feel intentional and memorable.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href="#showcase">
                 View showcase <ArrowUpRight size={18} />
               </a>
-              <a className="button button-ghost" href={asset('army-barnachea-resume.pdf')} target="_blank" rel="noreferrer">
-                Resume <Download size={18} />
-              </a>
+              <button className="button button-ghost" type="button" onClick={() => setResumeOpen(true)}>
+                View resume <ExternalLink size={18} />
+              </button>
             </div>
           </div>
 
@@ -443,7 +448,7 @@ function App() {
               <img src={asset('army-portrait-chef.webp')} alt="Army S. Barnachea in chef uniform" />
               <div>
                 <span>Current focus</span>
-                <strong>Technique · plating · service</strong>
+                <strong>Technique · Plating · Service</strong>
               </div>
             </div>
           </div>
@@ -661,6 +666,33 @@ function App() {
           </div>
         </section>
       </main>
+
+      {resumeOpen && (
+        <div className="resume-modal" role="dialog" aria-modal="true" aria-labelledby="resume-title" onClick={() => setResumeOpen(false)}>
+          <div className="resume-modal-card" onClick={(event) => event.stopPropagation()}>
+            <div className="resume-modal-header">
+              <div>
+                <span>Resume preview</span>
+                <h2 id="resume-title">Army S. Barnachea</h2>
+              </div>
+              <div className="resume-modal-actions">
+                <a href={resumeUrl} target="_blank" rel="noreferrer">
+                  Open resume <ExternalLink size={16} />
+                </a>
+                <button type="button" onClick={() => setResumeOpen(false)} aria-label="Close resume preview">
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+            <object data={resumeUrl} type="application/pdf" aria-label="Army S. Barnachea resume preview">
+              <div className="resume-fallback">
+                <p>The PDF preview did not load in this browser.</p>
+                <a href={resumeUrl} target="_blank" rel="noreferrer">Open the resume in a new tab</a>
+              </div>
+            </object>
+          </div>
+        </div>
+      )}
 
       <footer className="site-footer">
         <div>

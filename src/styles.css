@@ -231,11 +231,40 @@ h2 {
   letter-spacing: -0.04em;
 }
 
+.hero-person {
+  display: grid;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 26px;
+  margin-bottom: 18px;
+  padding-left: 18px;
+  border-left: 2px solid rgba(215, 181, 109, 0.86);
+}
+
+.hero-person span {
+  color: var(--champagne);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.1vw, 3.05rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-shadow: 0 14px 38px rgba(215, 181, 109, 0.14);
+}
+
+.hero-person strong {
+  color: rgba(247, 239, 226, 0.68);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
 .hero h1 {
   max-width: 760px;
-  margin: 22px 0 24px;
-  font-size: clamp(3.4rem, 7vw, 6.4rem);
-  line-height: 0.86;
+  margin: 0 0 24px;
+  font-size: clamp(3.15rem, 5.8vw, 5.9rem);
+  line-height: 0.9;
 }
 
 .hero p {
@@ -258,7 +287,10 @@ h2 {
   justify-content: center;
   gap: 10px;
   min-height: 52px;
+  border: 0;
   border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
   font-size: 0.84rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -293,14 +325,15 @@ h2 {
 .hero-visual {
   position: relative;
   justify-self: end;
-  width: min(100%, 650px);
-  min-height: clamp(560px, 70svh, 640px);
+  width: min(100%, 640px);
+  min-height: clamp(540px, 68svh, 620px);
+  padding-right: clamp(8px, 1vw, 16px);
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 0.75fr;
-  grid-template-rows: 230px 170px 205px;
+  grid-template-columns: 1fr 0.78fr;
+  grid-template-rows: 220px 160px 195px;
   gap: 14px;
   transform: rotate(-2deg);
   transform-origin: center;
@@ -328,13 +361,15 @@ h2 {
 }
 
 .hero-img-4 {
-  transform: translateY(-24px);
+  grid-column: 2;
+  grid-row: 3;
+  transform: translate(16px, -18px);
 }
 
 .portrait-card {
   position: absolute;
-  right: 2%;
-  bottom: 5%;
+  right: 7%;
+  bottom: 9%;
   display: grid;
   width: min(305px, 68%);
   gap: 12px;
@@ -351,6 +386,7 @@ h2 {
   width: 100%;
   border-radius: 22px;
   object-fit: cover;
+  object-position: center 42%;
 }
 
 .portrait-card div {
@@ -861,6 +897,116 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.resume-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 7, 5, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+.resume-modal-card {
+  overflow: hidden;
+  display: grid;
+  width: min(980px, 100%);
+  height: min(860px, 92svh);
+  grid-template-rows: auto 1fr;
+  border: 1px solid rgba(247, 239, 226, 0.18);
+  border-radius: 30px;
+  background: #15110d;
+  box-shadow: 0 34px 120px rgba(0, 0, 0, 0.55);
+}
+
+.resume-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(247, 239, 226, 0.12);
+  padding: 18px 20px;
+}
+
+.resume-modal-header span {
+  display: block;
+  color: var(--champagne);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.resume-modal-header h2 {
+  margin: 4px 0 0;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1;
+}
+
+.resume-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resume-modal-actions a,
+.resume-modal-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px solid rgba(247, 239, 226, 0.16);
+  border-radius: 999px;
+  background: rgba(247, 239, 226, 0.08);
+  color: var(--cream);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  padding: 0 14px;
+  text-transform: uppercase;
+}
+
+.resume-modal-actions button {
+  width: 42px;
+  padding: 0;
+}
+
+.resume-modal-card object {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #f7efe2;
+}
+
+.resume-fallback {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  gap: 14px;
+  color: #15110d;
+  padding: 28px;
+  text-align: center;
+}
+
+.resume-fallback p {
+  margin: 0;
+  color: #15110d;
+}
+
+.resume-fallback a {
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 999px;
+  background: #15110d;
+  color: #f7efe2;
+  font-weight: 800;
+  padding: 12px 18px;
+}
+
 .site-footer {
   display: flex;
   width: min(1180px, calc(100% - 36px));
@@ -1008,6 +1154,33 @@ h2 {
     width: 100%;
   }
 
+  .hero-person {
+    margin-top: 22px;
+    margin-bottom: 16px;
+  }
+
+  .resume-modal {
+    padding: 12px;
+  }
+
+  .resume-modal-card {
+    height: 94svh;
+    border-radius: 22px;
+  }
+
+  .resume-modal-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .resume-modal-actions {
+    width: 100%;
+  }
+
+  .resume-modal-actions a {
+    flex: 1;
+  }
+
   .hero-visual {
     min-height: auto;
   }
@@ -1024,7 +1197,8 @@ h2 {
   }
 
   .hero-img-1,
-  .hero-img-3 {
+  .hero-img-3,
+  .hero-img-4 {
     grid-row: auto;
     grid-column: auto;
   }
