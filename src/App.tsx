@@ -1,4 +1,6 @@
-import { useMemo, useState } from 'react';
+import { type CSSProperties, useMemo, useState } from 'react';
+import heroCharcuterieBackground from './assets/hero-charcuterie.webp';
+import brunchBoardBackground from './assets/dish-brunch-board.webp';
 import {
   ArrowUpRight,
   Award,
@@ -6,7 +8,6 @@ import {
   ChefHat,
   Download,
   ExternalLink,
-  FileText,
   GraduationCap,
   Contact,
   Mail,
@@ -132,12 +133,6 @@ const galleryItems: GalleryItem[] = [
     description: 'A plated board with fruit, garnish, and a polished service layout.',
   },
   {
-    title: 'Terrine Board Detail',
-    category: 'Displays & Service',
-    image: asset('dish-terrine-board-alt.webp'),
-    description: 'A second look at the same board, showing portioning and detail.',
-  },
-  {
     title: 'Pastry Table Display',
     category: 'Displays & Service',
     image: asset('display-pastry-table.webp'),
@@ -214,12 +209,6 @@ const galleryItems: GalleryItem[] = [
     category: 'Savory Plates',
     image: asset('dish-paired-entree-plates.webp'),
     description: 'Two matching plates prepared for consistent service presentation.',
-  },
-  {
-    title: 'Paired Entrée Plates II',
-    category: 'Savory Plates',
-    image: asset('dish-paired-entree-plates-alt.webp'),
-    description: 'A second paired entrée presentation with clean plating repetition.',
   },
   {
     title: 'Competition Chicken Plate',
@@ -348,18 +337,6 @@ const credentials: CredentialItem[] = [
   },
 ];
 
-const documentCards = [
-  {
-    title: 'Resume Preview — Page 1',
-    image: asset('army-resume-page-1.webp'),
-    href: asset('army-barnachea-resume.pdf'),
-  },
-  {
-    title: 'Resume Preview — Page 2',
-    image: asset('army-resume-page-2.webp'),
-    href: asset('army-barnachea-resume.pdf'),
-  },
-];
 
 const skills = [
   'Food preparation',
@@ -506,7 +483,10 @@ function App() {
           </div>
 
           <div className="about-grid">
-            <article className="about-card large-card">
+            <article
+              className="about-card large-card"
+              style={{ '--card-image': `url(${heroCharcuterieBackground})` } as CSSProperties}
+            >
               <Quote size={34} />
               <h3>Every plate should feel cared for.</h3>
               <p>
@@ -637,23 +617,13 @@ function App() {
               </p>
             </div>
           </div>
-
-          <div className="documents-grid" aria-label="Resume previews">
-            {documentCards.map((document) => (
-              <a className="document-card" key={document.title} href={document.href} target="_blank" rel="noreferrer">
-                <img src={document.image} alt={document.title} loading="lazy" />
-                <div>
-                  <FileText size={20} />
-                  <span>{document.title}</span>
-                  <ExternalLink size={16} />
-                </div>
-              </a>
-            ))}
-          </div>
         </section>
 
         <section className="section contact-section" id="contact">
-          <div className="contact-card">
+          <div
+            className="contact-card"
+            style={{ '--card-image': `url(${brunchBoardBackground})` } as CSSProperties}
+          >
             <div className="contact-copy">
               <span className="eyebrow">Availability</span>
               <h2>I am open to culinary internships, kitchen training, and hospitality opportunities.</h2>
